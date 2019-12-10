@@ -1,0 +1,211 @@
+<!DOCTYPE HTML>
+<!--
+	Escape Velocity by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Earthquakes in the last 7 days</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="homepage is-preload">
+		<div id="page-wrapper">
+
+<!-- Header -->
+	<section id="header" class="wrapper">
+
+<!-- Logo
+	<div id="logo">
+	<h1>This map illustrates all earthquakes that have occured over the last 7 days.</h1>
+	<p>These maps use live data from the USGS to show Earthquake data in the ring of fire</p>
+	</div>
+-->
+
+<!-- Nav
+	<nav id="nav">
+	<ul>
+		<li class="current"><a href="index.html">Home</a></li>
+	<li>
+
+	<a href="#">More</a>
+	<ul>
+		<li><a href="https://abplaj.wixsite.com/jessicabplanalp/analysis">Undergraduate Projects</a></li>
+		<li><a href="https://jessicabplanalp.github.io/PierceTransit/">Pierce Transit Boundry Project</a></li>
+		<li><a href="https://abplaj.wixsite.com/jessicabplanalp/resume">About Me</a></li>
+		<li><a href="https://www.tacoma.uw.edu/urban-studies/ms-program-overview">UWT MSGT Information</a></li>
+	</ul>
+	</nav>
+	</section>
+-->
+
+
+<title>Earthquakes above 4.5 magnitude in the last 7 days</title>
+
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+ <!-- leaflet CSS and JS library -->
+			 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+	 integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+	 crossorigin=""/>
+
+ <!-- Make sure you put this (Leaflet JS library) AFTER Leaflet's CSS -->
+			 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+	integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+	crossorigin=""></script>
+
+	<!-- Add JQuery to get local GeoJson file -->
+			 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+
+
+
+		 <script src='https://api.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js'></script>
+		 <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+		 <link href='https://api.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css' rel='stylesheet' />
+		 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		 <link rel="stylesheet" href="assets/css/main.css" />
+		 <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+
+
+	 </head>
+	 <body>
+
+	 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
+		 <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
+
+
+
+							 <h3 style="padding-left: 10%; color: #252523; background-color: #FFFFFF; margin: 2;"><center></h3>
+
+							<hr>
+		 <p><center>Earthquakes greater than 4.5 magnitude over the last 7 days</center></p>
+			 <hr>
+		 <div class="content">
+									 <section>
+
+
+						 <div id='newmap' style='width: 100%; height: 800px;'></div>
+
+						 <script>
+								 mapboxgl.accessToken = 'pk.eyJ1IjoiamVzc2ljYWJwbGFuYWxwIiwiYSI6ImNrMndvN2g0cjBoam0zYmw2eXd0bm12bTcifQ.RNICUHzCzEvRkIPxzq_RBg';
+								 //The map variable
+								 var newmap = new mapboxgl.Map({
+										 container: 'newmap',
+										 style: 'mapbox://styles/jessicabplanalp/ck3zinn2d2fj91clj8o1ngudt',
+										 center: [-155.5828, 19.8968],
+						 zoom: 2
+						 });
+
+							 newmap.scrollZoom.enable();
+							 newmap.addControl(new MapboxGeocoder({
+										 accessToken: mapboxgl.accessToken
+								 }));
+
+						 newmap.addControl(new mapboxgl.NavigationControl());
+
+							newmap.addControl(new mapboxgl.GeolocateControl({
+							 positionOptions: {
+									 enableHighAccuracy: true
+							 },
+							 trackUserLocation: true
+					 }));
+
+
+
+								 newmap.on('load', function(){
+										 newmap.addSource('earthquakes', {
+												 "type": "geojson",
+												 "data": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson"
+										 });
+										 newmap.addLayer({
+												 "id":"equakes",
+												 //"type":"circle",
+												 "source":"earthquakes",
+												 "paint": {
+														"circle-color": "#30415D",
+													"circle-opacity": 0.5,
+														 "circle-radius": 10,
+														 "circle-stroke-color": '#8EAEBD',
+														 "circle-stroke-width": 1,
+													 "circle-stroke-opacity": 0.75
+												 }
+										 });
+								//add a handler for clicking/popups
+								 //Thanks to: https://www.mapbox.com/mapbox-gl-js/example/popup-on-click/
+								 newmap.on('click', 'equakes', function (e) {
+										 newmap.getCanvas().style.cursor = 'pointer';
+										 var coordinates = e.features[0].geometry.coordinates.slice();
+										 var description = "<p>Mag: "+e.features[0].properties.mag+"<br>Location: "+e.features[0].properties.place+"<br>URL: <a href='"+e.features[0].properties.url+"'>USGS Details</a></p>"
+										 // Ensure that if the map is zoomed out such that multiple
+										 // copies of the feature are visible, the popup appears
+										 // over the copy being pointed to.
+										 while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+												 coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+										 }
+										 //make the popup
+										 new mapboxgl.Popup()
+										 .setLngLat(coordinates)
+										 .setHTML(description)
+										 .addTo(newmap);
+								 });
+										 // Change the cursor to a pointer when the mouse is over the places layer.
+										 newmap.on('mouseenter', 'equakes', function () {
+												 map.getCanvas().style.cursor = 'pointer';
+										 });
+										 // Change it back to a pointer when it leaves.
+										 newmap.on('mouseleave', 'equakes', function () {
+												 newmap.getCanvas().style.cursor = '';
+										 });
+								 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		</script>
+
+
+				<!-- Footer -->
+		 			<div id="footer">
+		 	 <!-- Copyright -->
+		 			<div class="copyright">
+		 			<ul class="menu">
+		 			<li>&copy; Jessica Abplanalp. All rights reserved.</li>
+		       <!-- uncomment this if you use the template
+		       <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+		       -->
+		 			</ul>
+		 			</div>
+		 			</div>
+		 		  </div>
+
+		    <!-- Scripts -->
+		    			<script src="assets/js/jquery.min.js"></script>
+		    			<script src="assets/js/jquery.dropotron.min.js"></script>
+		    			<script src="assets/js/jquery.scrolly.min.js"></script>
+		    			<script src="assets/js/jquery.scrollex.min.js"></script>
+		    			<script src="assets/js/browser.min.js"></script>
+		    			<script src="assets/js/breakpoints.min.js"></script>
+		    			<script src="assets/js/util.js"></script>
+		    			<script src="assets/js/main.js"></script>
+		    </body>
+		    </html>
