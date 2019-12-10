@@ -20,7 +20,7 @@
 <!-- Logo
 	<div id="logo">
 	<h1>This map illustrates all earthquakes that have occured over the last 7 days.</h1>
-	<p>These maps use live data from the USGS to show Earthquake data in the ring of fire</p>
+	<p>These maps use live data from the USGS to show Earthquakes from the last 7 days</p>
 	</div>
 -->
 
@@ -175,7 +175,10 @@
 
 
 
-
+  window.onload = () => sendPostMessage();
+  window.onresize = () => sendPostMessage();
+  document.getElementById('add-para').onclick = () => sendPostMessage();
+  document.getElementById('remove-para').onclick = () => sendPostMessage();
 
 
 
